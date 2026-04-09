@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>ИНТЕГРАЛ • Информационный портал</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f0f2f5;
+            color: #1a1a1a;
+            line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .header {
+            background: #ffffff;
+            border-bottom: 1px solid #ddd;
+            padding: 15px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .logo h1 {
+            font-size: 1.6rem;
+            color: #8b0000;
+            letter-spacing: 2px;
+        }
+
+        .logo p {
+            font-size: 0.7rem;
+            color: #666;
+        }
+
+        .nav-menu {
+            display: flex;
+            gap: 20px;
+            background: white;
+            padding: 0 20px;
+        }
+
+        .nav-link {
+            cursor: pointer;
+            font-weight: 500;
+            color: #1a1a1a;
+            padding: 5px 0;
+            transition: 0.2s;
+        }
+
+        .nav-link:hover {
+            color: #8b0000;
+        }
+
+        .active-nav {
+            color: #8b0000;
+            border-bottom: 2px solid #8b0000;
+        }
+
+        .login-btn {
+            background: #1a1a1a;
+            color: white;
+            border: none;
+            padding: 8px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: 0.2s;
+        }
+
+        .login-btn:hover {
+            background: #8b0000;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 30px;
+            flex: 1;
+        }
+
+        .hero {
+            background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+            color: white;
+            padding: 50px;
+            border-radius: 12px;
+            margin-bottom: 40px;
+            text-align: center;
+        }
+
+        .hero h2 {
+            font-size: 2rem;
+            margin-bottom: 15px;
+        }
+
+        .breaking-section {
+            margin-bottom: 50px;
+        }
+
+        .breaking-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
+        }
+
+        .breaking-title {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #8b0000;
+            border-left: 4px solid #8b0000;
+            padding-left: 12px;
+        }
+
+        .scroll-hint {
+            font-size: 0.7rem;
+            color: #888;
+            font-style: italic;
+        }
+
+        .breaking-wrapper {
+            position: relative;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .breaking-scroll {
+            display: flex;
+            overflow-x: auto;
+            scroll-behavior: smooth;
+            gap: 20px;
+            padding: 10px 5px 20px 5px;
+            scrollbar-width: thin;
+            -webkit-overflow-scrolling: touch;
+            width: 100%;
+        }
+
+        .breaking-card {
+            min-width: 280px;
+            max-width: 320px;
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            transition: 0.2s;
+            flex-shrink: 0;
+            border-top: 3px solid #8b0000;
+        }
+
+        .breaking-date {
+            font-size: 0.7rem;
+            color: #8b0000;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .scroll-arrow {
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 50%;
+            width: 36px;
+            height: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: 0.2s;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+            flex-shrink: 0;
+        }
+
+        .scroll-arrow:hover {
+            background: #8b0000;
+            color: white;
+            border-color: #8b0000;
+        }
+
+        .news-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            margin-bottom: 50px;
+        }
+
+        .news-card {
+            background: white;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            transition: 0.2s;
+        }
+
+        .news-date {
+            font-size: 0.7rem;
+            color: #8b0000;
+            text-transform: uppercase;
+            margin-bottom: 10px;
+        }
+
+        .daily-news {
+            background: white;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 30px;
+            border-left: 4px solid #8b0000;
+        }
+
+        .daily-news h4 {
+            margin-bottom: 10px;
+            color: #8b0000;
+        }
+
+        .about-text {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            margin-bottom: 30px;
+            line-height: 1.8;
+        }
+
+        .suggest-form {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .suggest-form input, .suggest-form textarea {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-family: inherit;
+        }
+
+        .suggest-form button {
+            background: #1a1a1a;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .telegram-banner {
+            background: #e8f0fe;
+            border-left: 4px solid #0088cc;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .footer {
+            background: #1a1a1a;
+            color: #888;
+            text-align: center;
+            padding: 25px;
+            margin-top: auto;
+            font-size: 0.8rem;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background-color: white;
+            padding: 30px;
+            border-radius: 8px;
+            width: 350px;
+            text-align: center;
+        }
+
+        .modal-content input {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+
+        .modal-content button {
+            background: #1a1a1a;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .close-modal {
+            float: right;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        .hidden-page {
+            display: none;
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                padding: 15px;
+            }
+            .hero {
+                padding: 25px;
+            }
+            .nav-menu {
+                gap: 12px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="header">
+    <div class="logo">
+        <h1>ИНТЕГРАЛ</h1>
+        <p>Информационный портал</p>
+    </div>
+    <div class="nav-menu">
+        <div class="nav-link active-nav" data-page="main">Главная</div>
+        <div class="nav-link" data-page="archive">Все новости</div>
+        <div class="nav-link" data-page="about">О нас</div>
+        <div class="nav-link" data-page="suggest">Предложить новость</div>
+    </div>
+    <button class="login-btn" id="openModalBtn">ВОЙТИ</button>
+</div>
+
+<!-- Главная страница -->
+<div id="mainPage">
+    <div class="container">
+        <div class="hero">
+            <h2>Срочное сообщение</h2>
+            <p>В связи с чрезвычайной ситуацией в Московском регионе, все жители подлежат эвакуации. Следите за официальными уведомлениями.</p>
+        </div>
+
+        <div class="breaking-section">
+            <div class="breaking-header">
+                <div class="breaking-title">⚡ ПОСЛЕДНИЕ НОВОСТИ</div>
+                <div class="scroll-hint">→ листайте вправо →</div>
+            </div>
+            <div class="breaking-wrapper">
+                <div class="scroll-arrow" id="scrollLeftBtn">◀</div>
+                <div class="breaking-scroll" id="breakingScroll">
+                    <div class="breaking-card"><div class="breaking-date">16 марта 2030</div><h3>Полная изоляция Москвы</h3><p>Въезд и выезд из Московского региона полностью ограничены. Все КПП закрыты.</p></div>
+                    <div class="breaking-card"><div class="breaking-date">15 марта 2030</div><h3>Новый поезд метро «Москва-2030»</h3><p>Из-за обострения ситуации новый поезд временно направлен в Санкт-Петербург.</p></div>
+                    <div class="breaking-card"><div class="breaking-date">14 марта 2030</div><h3>Мэр наградил учёных Росатома</h3><p>Мэр Москвы вручил государственные награды ведущим специалистам Росатома.</p></div>
+                    <div class="breaking-card"><div class="breaking-date">13 марта 2030</div><h3>Массовые сбои в системах управления</h3><p>Зафиксированы сбои в работе городских автоматизированных систем.</p></div>
+                    <div class="breaking-card"><div class="breaking-date">12 марта 2030</div><h3>Эвакуация Москвы</h3><p>Москва полностью опустела за 48 часов. Причина не разглашается.</p></div>
+                    <div class="breaking-card"><div class="breaking-date">11 марта 2030</div><h3>Открытие новой школы</h3><p>В районе Некрасовка открылась новая школа на 1200 мест.</p></div>
+                    <div class="breaking-card"><div class="breaking-date">10 марта 2030</div><h3>Завершение ремонта дорог</h3><p>В Москве завершён капремонт 15 км магистралей.</p></div>
+                    <div class="breaking-card"><div class="breaking-date">9 марта 2030</div><h3>Новый сквер в Тёплом Стане</h3><p>Открылся современный сквер с зонами для отдыха и детскими площадками.</p></div>
+                </div>
+                <div class="scroll-arrow" id="scrollRightBtn">▶</div>
+            </div>
+        </div>
+
+        <div class="daily-news">
+            <h4>🔹 Коротко о главном</h4>
+            <p><strong>Пожар на юго-востоке Москвы</strong> — Возгорание на территории заброшенного завода оперативно ликвидировано. Пострадавших нет.</p>
+            <p><strong>Отключение электроэнергии в ЦАО</strong> — Ведутся ремонтные работы. Ориентировочное время восстановления — 4 часа.</p>
+            <p><strong>Новый сквер на месте пустыря</strong> — В районе Тёплый Стан открылся новый сквер с зонами для отдыха и детскими площадками.</p>
+            <p><strong>Городской конкурс молодых учёных</strong> — Стартовал приём заявок на участие в конкурсе инновационных проектов.</p>
+        </div>
+    </div>
+</div>
+
+<!-- Страница архива (все новости, без сортировки) -->
+<div id="archivePage" class="hidden-page">
+    <div class="container">
+        <div class="hero">
+            <h2>Архив новостей</h2>
+            <p>Все публикации портала «Интеграл» (1 февраля — 16 марта)</p>
+        </div>
+        <div id="archiveGrid" class="news-grid"></div>
+    </div>
+</div>
+
+<!-- Страница О нас -->
+<div id="aboutPage" class="hidden-page">
+    <div class="container">
+        <div class="about-text">
+            <h2>О портале «Интеграл»</h2>
+            <p>«Интеграл» — независимый информационный портал, созданный в 2028 году группой энтузиастов. Наша цель — оперативное и достоверное освещение событий в Москве и Московской области.</p>
+            <p>В отличие от государственных СМИ, мы не боимся задавать неудобные вопросы и искать альтернативные источники информации. Наши журналисты работают по всему городу, чтобы вы получали самые свежие новости.</p>
+            <div class="telegram-banner">
+                📬 Связаться с редакцией: <strong>@integral_bot</strong>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Страница Предложить новость (без уведомления) -->
+<div id="suggestPage" class="hidden-page">
+    <div class="container">
+        <div class="suggest-form">
+            <h2>Предложить новость</h2>
+            <p>Поделитесь информацией, которая, по вашему мнению, должна попасть в ленту «Интеграла».</p>
+            <input type="text" id="newsTitle" placeholder="Заголовок новости">
+            <textarea id="newsText" rows="5" placeholder="Текст новости..."></textarea>
+            <button id="submitNewsBtn">Отправить</button>
+            <p style="margin-top: 15px; font-size: 0.8rem; color: #888;">Или напишите нам в Telegram: <strong>@integral_bot</strong></p>
+        </div>
+    </div>
+</div>
+
+<div class="footer">
+    © 2030 ИНТЕГРАЛ. Все права защищены. Информация предоставлена анонимным источником.
+</div>
+
+<div id="loginModal" class="modal">
+    <div class="modal-content">
+        <span class="close-modal" id="closeModalBtn">&times;</span>
+        <h3>Вход в систему</h3>
+        <input type="text" id="modalUsername" placeholder="ЛОГИН">
+        <input type="password" id="modalPassword" placeholder="ПАРОЛЬ">
+        <button id="modalLoginBtn">ВОЙТИ</button>
+        <p id="modalError" style="color: red; margin-top: 10px; display: none;">Неверный логин или пароль</p>
+        <p style="margin-top: 15px; font-size: 0.7rem; color: #888;">Доступ к архивам «Интеграла» ограничен</p>
+    </div>
+</div>
+
+<script>
+    // Массив новостей для архива
+    const archiveNews = [
+        { date: "16 марта 2030", title: "Полная изоляция Москвы", text: "Въезд и выезд из Московского региона полностью ограничены. Все КПП закрыты." },
+        { date: "15 марта 2030", title: "Новый поезд метро «Москва-2030»", text: "Из-за обострения ситуации новый поезд временно направлен в Санкт-Петербург." },
+        { date: "14 марта 2030", title: "Мэр наградил учёных Росатома", text: "Мэр Москвы вручил государственные награды ведущим специалистам Росатома." },
+        { date: "13 марта 2030", title: "Массовые сбои в системах управления", text: "Зафиксированы сбои в работе городских автоматизированных систем." },
+        { date: "12 марта 2030", title: "Эвакуация Москвы", text: "Москва полностью опустела за 48 часов. Причина не разглашается." },
+        { date: "11 марта 2030", title: "Открытие новой школы", text: "В районе Некрасовка открылась новая школа на 1200 мест." },
+        { date: "10 марта 2030", title: "Завершение ремонта дорог", text: "В Москве завершён капремонт 15 км магистралей." },
+        { date: "9 марта 2030", title: "Новый сквер в Тёплом Стане", text: "Открылся современный сквер с зонами для отдыха и детскими площадками." },
+        { date: "8 марта 2030", title: "Конкурс молодых учёных", text: "Стартовал приём заявок на городской конкурс инновационных проектов." },
+        { date: "7 марта 2030", title: "Новый автобусный маршрут", text: "Новый маршрут связал спальные районы с центром города." },
+        { date: "6 марта 2030", title: "Фестиваль уличной еды", text: "В парке Горького прошёл фестиваль уличной еды." },
+        { date: "5 марта 2030", title: "Ремонт поликлиники", text: "После капитального ремонта открылась поликлиника № 123." },
+        { date: "4 марта 2030", title: "Выставка современного искусства", text: "В Манеже открылась выставка «Город будущего»." },
+        { date: "3 марта 2030", title: "Новая станция метро", text: "Открылась станция «Некрасовская» на юго-востоке Москвы." },
+        { date: "2 марта 2030", title: "Киберспортивный турнир", text: "В Москве прошёл международный турнир по киберспорту." },
+        { date: "1 марта 2030", title: "День открытых дверей в МГУ", text: "МГУ провёл день открытых дверей для абитуриентов." },
+        { date: "28 февраля 2030", title: "Новый образовательный центр", text: "В Зеленограде открылся центр дополнительного образования для школьников." },
+        { date: "25 февраля 2030", title: "Запуск завода", text: "В ТиНАО запущено новое высокотехнологичное предприятие." },
+        { date: "20 февраля 2030", title: "Рекорд ГИБДД", text: "Зафиксирован самый низкий уровень аварийности за последние 10 лет." },
+        { date: "15 февраля 2030", title: "Фестиваль науки", text: "На ВДНХ прошёл фестиваль науки, собравший 50 тысяч посетителей." },
+        { date: "10 февраля 2030", title: "Новая школа искусств", text: "В районе Митино открылась детская школа искусств." },
+        { date: "8 февраля 2030", title: "День российской науки", text: "В Москве прошли мероприятия, посвящённые Дню российской науки." },
+        { date: "5 февраля 2030", title: "Рекорд по снегопаду", text: "В Москве выпало рекордное количество снега за последние 50 лет." },
+        { date: "1 февраля 2030", title: "Строительство парка", text: "Началось строительство нового парка в районе Некрасовка." }
+    ];
+
+    function renderArchive() {
+        const container = document.getElementById('archiveGrid');
+        if (!container) return;
+        container.innerHTML = archiveNews.map(news => `
+            <div class="news-card">
+                <div class="news-date">${news.date}</div>
+                <h3>${news.title}</h3>
+                <p>${news.text}</p>
+            </div>
+        `).join('');
+    }
+
+    // Навигация
+    const mainPage = document.getElementById('mainPage');
+    const archivePage = document.getElementById('archivePage');
+    const aboutPage = document.getElementById('aboutPage');
+    const suggestPage = document.getElementById('suggestPage');
+    const navLinks = document.querySelectorAll('.nav-link');
+
+    function showPage(pageId) {
+        mainPage.classList.add('hidden-page');
+        archivePage.classList.add('hidden-page');
+        aboutPage.classList.add('hidden-page');
+        suggestPage.classList.add('hidden-page');
+        if (pageId === 'main') mainPage.classList.remove('hidden-page');
+        if (pageId === 'archive') {
+            archivePage.classList.remove('hidden-page');
+            renderArchive();
+        }
+        if (pageId === 'about') aboutPage.classList.remove('hidden-page');
+        if (pageId === 'suggest') suggestPage.classList.remove('hidden-page');
+        navLinks.forEach(link => link.classList.remove('active-nav'));
+        document.querySelector(`.nav-link[data-page="${pageId}"]`).classList.add('active-nav');
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    navLinks.forEach(link => {
+        link.addEventListener('click', () => {
+            const page = link.getAttribute('data-page');
+            showPage(page);
+        });
+    });
+
+    // Горизонтальная прокрутка
+    const scrollContainer = document.getElementById('breakingScroll');
+    const leftBtn = document.getElementById('scrollLeftBtn');
+    const rightBtn = document.getElementById('scrollRightBtn');
+    if (leftBtn && rightBtn && scrollContainer) {
+        leftBtn.addEventListener('click', () => scrollContainer.scrollBy({ left: -280, behavior: 'smooth' }));
+        rightBtn.addEventListener('click', () => scrollContainer.scrollBy({ left: 280, behavior: 'smooth' }));
+    }
+
+    // Модальное окно
+    const modal = document.getElementById('loginModal');
+    const openBtn = document.getElementById('openModalBtn');
+    const closeBtn = document.getElementById('closeModalBtn');
+    const modalLoginBtn = document.getElementById('modalLoginBtn');
+    const modalError = document.getElementById('modalError');
+
+    openBtn.onclick = () => modal.style.display = 'flex';
+    closeBtn.onclick = () => { modal.style.display = 'none'; modalError.style.display = 'none'; };
+    window.onclick = (event) => { if (event.target == modal) { modal.style.display = 'none'; modalError.style.display = 'none'; } };
+    modalLoginBtn.onclick = () => { modalError.style.display = 'block'; modalError.innerText = 'Доступ временно ограничен. Введите корректные данные.'; };
+
+    // Отправка новости (просто очистка полей, без уведомления)
+    const submitBtn = document.getElementById('submitNewsBtn');
+    if (submitBtn) {
+        submitBtn.addEventListener('click', () => {
+            const title = document.getElementById('newsTitle').value;
+            const text = document.getElementById('newsText').value;
+            if (!title || !text) {
+                alert('Пожалуйста, заполните заголовок и текст новости');
+                return;
+            }
+            // Просто очищаем поля
+            document.getElementById('newsTitle').value = '';
+            document.getElementById('newsText').value = '';
+            alert('Спасибо! Ваша новость отправлена на модерацию.');
+        });
+    }
+</script>
+</body>
+</html>
